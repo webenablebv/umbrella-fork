@@ -11,7 +11,10 @@ export default class UmbrellaCollection extends HTMLElement {
         this.maxLength = parseInt(this.dataset.maxLength)
         this.sortable = this.dataset.sortable === 'true'
 
-        this.addAction = this.querySelector('.js-add-item')
+        // If the parent has child umbrella collections we always take the last element because this is the correct button from the nodelist
+        const addButtons = this.querySelectorAll('.js-add-item');
+        this.addAction = addButtons[addButtons.length - 1];
+
         this.deleteActions = this.querySelectorAll('.js-del-item')
         this.itemsContainer = this.querySelector('.js-item-container')
     }
@@ -20,6 +23,7 @@ export default class UmbrellaCollection extends HTMLElement {
         this._updateAddAction();
 
         if (this.addAction) {
+            console.log(this.addAction);
             this.addAction.addEventListener('click', e => {
                 e.preventDefault();
                 this.addRow();
