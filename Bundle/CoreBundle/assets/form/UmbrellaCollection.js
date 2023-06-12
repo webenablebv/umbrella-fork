@@ -16,14 +16,23 @@ export default class UmbrellaCollection extends HTMLElement {
         this.addAction = addButtons[addButtons.length - 1];
 
         this.deleteActions = this.querySelectorAll('.js-del-item')
-        this.itemsContainer = this.querySelector('.js-item-container')
+
+        const containers = this.querySelectorAll('.js-item-container');
+
+        if (containers.length > 0) {
+
+            this.itemsContainer = containers[0];
+        }
+
+        // console.log(this.itemsContainer);
+
+        // this.itemsContainer = this.querySelector('.js-item-container')
     }
 
     connectedCallback() {
         this._updateAddAction();
 
         if (this.addAction) {
-            console.log(this.addAction);
             this.addAction.addEventListener('click', e => {
                 e.preventDefault();
                 this.addRow();
@@ -36,10 +45,13 @@ export default class UmbrellaCollection extends HTMLElement {
         }))
 
         if (this.sortable) {
+            // console.log(this.itemsContainer);
             dragula({
                 containers: [this.itemsContainer],
                 moves: function (el, source, handle, sibling) {
-                    return handle.classList.contains('js-drag-handle') || handle.parentNode.classList.contains('js-drag-handle');
+                    let hasCorrectParent = handle.closest('tbody') == source;
+                    // return handle.classList.contains('js-drag-handle') || handle.parentNode.classList.contains('js-drag-handle');
+                    return handle.classList.contains('js-drag-handle') || handle.parentNode.classList.contains('js-drag-handle') && hasCorrectParent;
                 },
                 mirrorContainer: this.itemsContainer
             });
