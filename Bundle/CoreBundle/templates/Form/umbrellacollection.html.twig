@@ -77,7 +77,7 @@
 {% endblock %}
 
 {% block umbrellacollection_item %}
-    <td>
+    <td data-bs-toggle="tooltip" data-bs-html="true" title='{{ item_form.vars.help }}'>
         {{ form_widget(item_form) }}
         {{ form_errors(item_form) }}
     </td>
